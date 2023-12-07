@@ -1,0 +1,242 @@
+package com.techpalle.jdbc;
+
+import java.sql.*;
+
+public class StudentServices {
+
+	private static Connection con=null;
+	private static Statement stm=null;
+	private static PreparedStatement pt=null;
+	private static ResultSet rs=null;
+	
+     
+	private static Connection myConnecction() throws ClassNotFoundException, SQLException
+	{
+		// Load the Driver Class
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+		// Establish The Connection 
+		
+		con=DriverManager.getConnection("jdbc:mysql://localhost:3306/palle","root","PRAVEEN@93");
+	    
+		// Return The Connection
+		return con;
+	}
+	
+	// Creating The Student Table
+	
+	public static void creating()
+	{
+		try {
+			// Load The Driver Class And Establish The Connection
+			con=myConnecction();
+			//Create Statement
+			stm=con.createStatement();
+			// Execute The Query
+			String qry="create table Student(sno int primary key auto_increment,sname varchar(200),sub varchar(200),email varchar(200) unique)";
+			stm.executeUpdate(qry);
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(stm!=null) 
+			{
+				try {
+					stm.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(con!=null) 
+			{
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	// inserting the values into Student Table
+	public static void inserting (String name,String sub,String email)
+	{
+		try {
+			// Load The Driver Class And Establish The Connection
+			con=myConnecction();
+			//Create Statement
+			String qry="insert into student(sname,sub,email) values(?,?,?)";
+			pt=con.prepareStatement(qry);
+			pt.setString(1, name);
+			pt.setString(2, sub);
+			pt.setString(3, email);
+			
+			pt.executeUpdate();
+			// Execute The Query
+			
+			
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(pt!=null) 
+			{
+				try {
+					pt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(con!=null) 
+			{
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
+	
+	// Deleting The Rows
+	public static void deleting(int sno)
+	{
+		try {
+			// Load The Driver Class And Establish The Connection
+			con=myConnecction();
+			//Create Statement
+			String qry="delete from student where sno=?";
+			pt=con.prepareStatement(qry);
+			pt.setInt(1,sno );
+			
+			pt.executeUpdate();
+			// Execute The Query
+			
+			
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(pt!=null) 
+			{
+				try {
+					pt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(con!=null) 
+			{
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
+	
+	
+	// Update Rows In The Table 
+	
+	public static void updateing(int sno, String name,String email)
+	{
+      
+		try {
+			// Load The Driver Class And Establish The Connection
+			con=myConnecction();
+			// Prepare Statement
+			String qry="update student set sname=?,email=? where sno=?";
+		pt=con.prepareCall(qry);
+		pt.setString(1, name);
+		pt.setString(2, email);
+		pt.setInt(3, sno);
+		pt.executeUpdate();
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		finally
+		{
+			if(pt!=null) 
+			{
+				try {
+					pt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(con!=null) 
+			{
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	//Read The Student From Table 
+	
+	public static void read()
+	{
+	try {
+		// Load The Driver Class And Estbalish The Connection
+		con=myConnecction();
+		stm=con.createStatement();
+		String qry="select * from Student";
+		rs=stm.executeQuery(qry);
+		
+		while(rs.next())
+		{
+			System.out.println(rs.getInt("sno"));
+			System.out.println(rs.getString("sname"));
+			System.out.println(rs.getString("sub"));
+			System.out.println(rs.getString("email")+"\n");
+		}
+		
+	} catch (ClassNotFoundException | SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	finally
+	{
+		if(rs!=null)
+		{
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if(stm!=null) 
+		{
+			try {
+				stm.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if(con!=null) 
+		{
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	}
+}
