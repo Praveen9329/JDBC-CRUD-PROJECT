@@ -1,0 +1,29 @@
+package com.techpalle.main;
+ import com.techpalle.jdbc.StudentServices;
+public class StudentApplication {
+
+	public static void main(String[] args) {
+	   
+		
+		//Create The Table
+	//StudentServices.creating();
+		
+		// Inserting Values into The Student Table
+		
+       //   StudentServices.inserting("Russell","Java", "r@gmail.com");
+      // StudentServices.inserting("Narine","python", "n@gmail.com");
+     //  StudentServices.inserting("Pooran","Java", "p@gmail.com");
+		
+		// Deleteing The Rows From Student Table
+		
+	//	StudentServices.deleting(3);
+		
+		// Updating the rows from student table 
+		
+	//	StudentServices.updateing(2,"Nithish", "Rana@gmail.com");
+		
+		
+		// Read The Data From Student table
+		StudentServices.read();
+	}
+}
